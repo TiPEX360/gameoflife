@@ -32,9 +32,9 @@ type cell struct {
 // distributorToIo defines all chans that the distributor goroutine will have to communicate with the io goroutine.
 // Note the restrictions on chans being send-only or receive-only to prevent bugs.
 type distributorToIo struct {
-	command chan<- ioCommand
-	idle    <-chan bool
-
+	command   chan<- ioCommand
+	idle      <-chan bool
+	outputVal chan<- uint8
 	filename  chan<- string
 	inputVal  <-chan uint8
 }
@@ -42,9 +42,9 @@ type distributorToIo struct {
 // ioToDistributor defines all chans that the io goroutine will have to communicate with the distributor goroutine.
 // Note the restrictions on chans being send-only or receive-only to prevent bugs.
 type ioToDistributor struct {
-	command <-chan ioCommand
-	idle    chan<- bool
-
+	command   <-chan ioCommand
+	idle      chan<- bool
+	outputVal <-chan uint8
 	filename  <-chan string
 	inputVal  chan<- uint8
 }
@@ -57,6 +57,7 @@ type distributorChans struct {
 // ioChans stores all the chans that the io goroutine will use.
 type ioChans struct {
 	distributor ioToDistributor
+	//toIo        distributorToIo
 }
 
 // gameOfLife is the function called by the testing framework.
@@ -65,6 +66,7 @@ type ioChans struct {
 // It returns an array of alive cells returned by the distributor.
 func gameOfLife(p golParams, keyChan <-chan rune) []cell {
 	var dChans distributorChans
+	//renamed
 	var ioChans ioChans
 
 	ioCommand := make(chan ioCommand)
@@ -82,6 +84,11 @@ func gameOfLife(p golParams, keyChan <-chan rune) []cell {
 	inputVal := make(chan uint8)
 	dChans.io.inputVal = inputVal
 	ioChans.distributor.inputVal = inputVal
+
+	//Output Value
+	outputVal := make(chan uint8)
+	dChans.io.outputVal = outputVal
+	ioChans.distributor.outputVal = outputVal
 
 	aliveCells := make(chan []cell)
 
@@ -117,7 +124,7 @@ func main() {
 
 	flag.Parse()
 
-	params.turns = 10000000000
+	params.turns = 100
 
 	startControlServer(params)
 	gameOfLife(params, nil)

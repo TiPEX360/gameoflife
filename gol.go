@@ -36,15 +36,19 @@ func distributor(p golParams, d distributorChans, alive chan []cell) {
 			for x := 0; x < p.imageWidth; x++ {
 				// Placeholder for the actual Game of Life logic: flips alive cells to dead and dead cells to alive.
 				world[y][x] = world[y][x] ^ 0xFF
+				// add game logic
 			}
 		}
 	}
 
+	d.io.command <- ioOutput
+	d.io.filename <- "moo"
 	// Create an empty slice to store coordinates of cells that are still alive after p.turns are done.
 	var finalAlive []cell
 	// Go through the world and append the cells that are still alive.
 	for y := 0; y < p.imageHeight; y++ {
 		for x := 0; x < p.imageWidth; x++ {
+			d.io.outputVal <- world[x][y]
 			if world[y][x] != 0 {
 				finalAlive = append(finalAlive, cell{x: x, y: y})
 			}
@@ -57,4 +61,5 @@ func distributor(p golParams, d distributorChans, alive chan []cell) {
 
 	// Return the coordinates of cells that are still alive.
 	alive <- finalAlive
+
 }
