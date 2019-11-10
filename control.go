@@ -31,7 +31,7 @@ func startControlServer(p golParams) {
 	fmt.Println("Height:", p.imageHeight)
 }
 
-// stopControlServer closes termbox.
+// StopControlServer closes termbox.
 // If the program is terminated without closing termbox the terminal window may misbehave.
 func StopControlServer() {
 	termbox.Close()

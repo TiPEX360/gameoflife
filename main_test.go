@@ -1,9 +1,10 @@
 package main
 
 import (
-	"github.com/stretchr/testify/assert"
 	"os"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func Test(t *testing.T) {
@@ -189,123 +190,123 @@ func Benchmark(b *testing.B) {
 	}{
 		{
 			"16x16x2", golParams{
-			turns:       benchLength,
-			threads:     2,
-			imageWidth:  16,
-			imageHeight: 16,
-		}},
+				turns:       benchLength,
+				threads:     2,
+				imageWidth:  16,
+				imageHeight: 16,
+			}},
 
 		{
 			"16x16x4", golParams{
-			turns:       benchLength,
-			threads:     4,
-			imageWidth:  16,
-			imageHeight: 16,
-		}},
+				turns:       benchLength,
+				threads:     4,
+				imageWidth:  16,
+				imageHeight: 16,
+			}},
 
 		{
 			"16x16x8", golParams{
-			turns:       benchLength,
-			threads:     8,
-			imageWidth:  16,
-			imageHeight: 16,
-		}},
+				turns:       benchLength,
+				threads:     8,
+				imageWidth:  16,
+				imageHeight: 16,
+			}},
 
 		{
 			"64x64x2", golParams{
-			turns:       benchLength,
-			threads:     2,
-			imageWidth:  64,
-			imageHeight: 64,
-		}},
+				turns:       benchLength,
+				threads:     2,
+				imageWidth:  64,
+				imageHeight: 64,
+			}},
 
 		{
 			"64x64x4", golParams{
-			turns:       benchLength,
-			threads:     4,
-			imageWidth:  64,
-			imageHeight: 64,
-		}},
+				turns:       benchLength,
+				threads:     4,
+				imageWidth:  64,
+				imageHeight: 64,
+			}},
 
 		{
 			"64x64x8", golParams{
-			turns:       benchLength,
-			threads:     8,
-			imageWidth:  64,
-			imageHeight: 64,
-		}},
+				turns:       benchLength,
+				threads:     8,
+				imageWidth:  64,
+				imageHeight: 64,
+			}},
 
 		{
 			"128x128x2", golParams{
-			turns:       benchLength,
-			threads:     2,
-			imageWidth:  128,
-			imageHeight: 128,
-		}},
+				turns:       benchLength,
+				threads:     2,
+				imageWidth:  128,
+				imageHeight: 128,
+			}},
 
 		{
 			"128x128x4", golParams{
-			turns:       benchLength,
-			threads:     4,
-			imageWidth:  128,
-			imageHeight: 128,
-		}},
+				turns:       benchLength,
+				threads:     4,
+				imageWidth:  128,
+				imageHeight: 128,
+			}},
 
 		{
 			"128x128x8", golParams{
-			turns:       benchLength,
-			threads:     8,
-			imageWidth:  128,
-			imageHeight: 128,
-		}},
+				turns:       benchLength,
+				threads:     8,
+				imageWidth:  128,
+				imageHeight: 128,
+			}},
 
 		{
 			"256x256x2", golParams{
-			turns:       benchLength,
-			threads:     2,
-			imageWidth:  256,
-			imageHeight: 256,
-		}},
+				turns:       benchLength,
+				threads:     2,
+				imageWidth:  256,
+				imageHeight: 256,
+			}},
 
 		{
 			"256x256x4", golParams{
-			turns:       benchLength,
-			threads:     4,
-			imageWidth:  256,
-			imageHeight: 256,
-		}},
+				turns:       benchLength,
+				threads:     4,
+				imageWidth:  256,
+				imageHeight: 256,
+			}},
 
 		{
 			"256x256x8", golParams{
-			turns:       benchLength,
-			threads:     8,
-			imageWidth:  256,
-			imageHeight: 256,
-		}},
+				turns:       benchLength,
+				threads:     8,
+				imageWidth:  256,
+				imageHeight: 256,
+			}},
 
 		{
 			"512x512x2", golParams{
-			turns:       benchLength,
-			threads:     2,
-			imageWidth:  512,
-			imageHeight: 512,
-		}},
+				turns:       benchLength,
+				threads:     2,
+				imageWidth:  512,
+				imageHeight: 512,
+			}},
 
 		{
 			"512x512x4", golParams{
-			turns:       benchLength,
-			threads:     4,
-			imageWidth:  512,
-			imageHeight: 512,
-		}},
+				turns:       benchLength,
+				threads:     4,
+				imageWidth:  512,
+				imageHeight: 512,
+			}},
 
 		{
 			"512x512x8", golParams{
-			turns:       benchLength,
-			threads:     8,
-			imageWidth:  512,
-			imageHeight: 512,
-		}},
+				turns:       benchLength,
+				threads:     8,
+				imageWidth:  512,
+				imageHeight: 512,
+			}},
 	}
 	for _, bm := range benchmarks {
 		os.Stdout = nil // Disable all program output apart from benchmark results

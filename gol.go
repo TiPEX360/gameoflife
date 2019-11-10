@@ -6,9 +6,46 @@ import (
 	"strings"
 )
 
+func makeTurn(world [][]byte, height int, width int) [][]byte {
+	//Create new empty world slice
+	newWorld := make([][]byte, height)
+	for i := range newWorld {
+		newWorld[i] = make([]byte, width)
+	}
+
+	//Fill new empty world with alive cells
+	for y := 0; y < height; y++ {
+		for x := 0; x < width; x++ {
+			//For each cell count surrounding alive cells
+			count := 0
+			for i := -1; i < 2; i++ {
+				for j := -1; j < 2; j++ {
+					if !(i == 0 && j == 0) {
+						if world[(y+height+i)%height][(x+width+j)%width] != 0 {
+							count++
+						}
+					}
+				}
+			}
+
+			//Update current cells in new World
+			switch {
+			case count < 2:
+				newWorld[y][x] = 0x00
+			case count == 3:
+				newWorld[y][x] = 0xFF
+			case count == 2:
+				newWorld[y][x] = world[y][x]
+			}
+		}
+	}
+
+	//Return newWorld
+	return newWorld
+}
+
 // distributor divides the work between workers and interacts with other goroutines.
 func distributor(p golParams, d distributorChans, alive chan []cell) {
-
 	// Create the 2D slice to store the world.
 	world := make([][]byte, p.imageHeight)
 	for i := range world {
@@ -32,25 +69,20 @@ func distributor(p golParams, d distributorChans, alive chan []cell) {
 
 	// Calculate the new state of Game of Life after the given number of turns.
 	for turns := 0; turns < p.turns; turns++ {
-		for y := 0; y < p.imageHeight; y++ {
-			for x := 0; x < p.imageWidth; x++ {
-				// Placeholder for the actual Game of Life logic: flips alive cells to dead and dead cells to alive.
-				world[y][x] = world[y][x] ^ 0xFF
-				// add game logic
-			}
-		}
+		world = makeTurn(world, p.imageHeight, p.imageWidth)
 	}
 
+	//Request pgmIo goroutine to output 2D slice as image
 	d.io.command <- ioOutput
-	d.io.filename <- "moo"
+	d.io.filename <- "out"
 	// Create an empty slice to store coordinates of cells that are still alive after p.turns are done.
 	var finalAlive []cell
 	// Go through the world and append the cells that are still alive.
 	for y := 0; y < p.imageHeight; y++ {
 		for x := 0; x < p.imageWidth; x++ {
-			d.io.outputVal <- world[x][y]
+			d.io.outputVal <- world[x][y] //Sends to channel for io to receive
 			if world[y][x] != 0 {
-				finalAlive = append(finalAlive, cell{x: x, y: y})
+				finalAlive = append(finalAlive, cell{x: x, y: y}) //Sets finalAlive for testing
 			}
 		}
 	}

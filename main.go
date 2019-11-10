@@ -57,7 +57,6 @@ type distributorChans struct {
 // ioChans stores all the chans that the io goroutine will use.
 type ioChans struct {
 	distributor ioToDistributor
-	//toIo        distributorToIo
 }
 
 // gameOfLife is the function called by the testing framework.
@@ -66,7 +65,6 @@ type ioChans struct {
 // It returns an array of alive cells returned by the distributor.
 func gameOfLife(p golParams, keyChan <-chan rune) []cell {
 	var dChans distributorChans
-	//renamed
 	var ioChans ioChans
 
 	ioCommand := make(chan ioCommand)
@@ -85,7 +83,6 @@ func gameOfLife(p golParams, keyChan <-chan rune) []cell {
 	dChans.io.inputVal = inputVal
 	ioChans.distributor.inputVal = inputVal
 
-	//Output Value
 	outputVal := make(chan uint8)
 	dChans.io.outputVal = outputVal
 	ioChans.distributor.outputVal = outputVal
