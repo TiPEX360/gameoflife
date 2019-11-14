@@ -6,6 +6,30 @@ import (
 	"strings"
 )
 
+func worker(wChan chan byte, height int, width int) {
+	//Create empty slice for world chunk
+	world := make([][]byte, height)
+	for i := range world {
+		world[i] = make([]byte, width)
+	}
+
+	for {
+		for i := 0; i < height; i++ {
+			for j := 0; j < width; j++ {
+				world[i][j] = <-wChan
+			}
+		}
+
+		world = makeTurn(world, height, width)
+
+		for i := 1; i < height-1; i++ {
+			for j := 0; j < width; j++ {
+				wChan <- world[i][j]
+			}
+		}
+	}
+}
+
 func makeTurn(world [][]byte, height int, width int) [][]byte {
 	//Create new empty world slice
 	newWorld := make([][]byte, height)
@@ -45,7 +69,7 @@ func makeTurn(world [][]byte, height int, width int) [][]byte {
 }
 
 // distributor divides the work between workers and interacts with other goroutines.
-func distributor(p golParams, d distributorChans, alive chan []cell) {
+func distributor(p golParams, d distributorChans, alive chan []cell, workerChans []chan byte) {
 	// Create the 2D slice to store the world.
 	world := make([][]byte, p.imageHeight)
 	for i := range world {
@@ -69,13 +93,30 @@ func distributor(p golParams, d distributorChans, alive chan []cell) {
 
 	// Calculate the new state of Game of Life after the given number of turns.
 	for turns := 0; turns < p.turns; turns++ {
-		world = makeTurn(world, p.imageHeight, p.imageWidth)
+		for thread := 0; thread < p.threads; thread++ {
+			top := (thread*(p.imageHeight/p.threads) - 1)
+			bottom := ((thread + 1) * (p.imageHeight / p.threads))
+			for i := top; i <= bottom; i++ {
+				for j := 0; j <= p.imageWidth-1; j++ {
+
+					workerChans[thread] <- world[(i+p.imageHeight)%p.imageHeight][j]
+				}
+			}
+		}
+
+		for thread := 0; thread < p.threads; thread++ {
+			for i := thread * (p.imageHeight / p.threads); i < (thread+1)*(p.imageHeight/p.threads); i++ {
+				for j := 0; j < p.imageWidth; j++ {
+					world[i][j] = <-workerChans[thread]
+				}
+			}
+		}
 	}
 
 	//Request pgmIo goroutine to output 2D slice as image
 	d.io.command <- ioOutput
-	d.io.filename <- "out"
-	// Create an empty slice to store coordinates of cells that are still alive after p.turns are done.
+	d.io.filename <- strconv.Itoa(p.imageHeight) + "x" + strconv.Itoa(p.imageWidth) + "-" + strconv.Itoa(p.turns)
+	// Create an empty slice to store coordinates of cells that a1re still alive after p.turns are done.
 	var finalAlive []cell
 	// Go through the world and append the cells that are still alive.
 	for y := 0; y < p.imageHeight; y++ {

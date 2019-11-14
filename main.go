@@ -89,7 +89,14 @@ func gameOfLife(p golParams, keyChan <-chan rune) []cell {
 
 	aliveCells := make(chan []cell)
 
-	go distributor(p, dChans, aliveCells)
+	workerChans := make([]chan byte, p.threads)
+
+	for i := 0; i < p.threads; i++ {
+		workerChans[i] = make(chan byte)
+		go worker(workerChans[i], (p.imageHeight/p.threads + 2), p.imageWidth)
+	}
+
+	go distributor(p, dChans, aliveCells, workerChans)
 	go pgmIo(p, ioChans)
 
 	alive := <-aliveCells
@@ -121,7 +128,7 @@ func main() {
 
 	flag.Parse()
 
-	params.turns = 100
+	params.turns = 10
 
 	startControlServer(params)
 	gameOfLife(params, nil)
