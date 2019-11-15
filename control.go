@@ -36,3 +36,24 @@ func startControlServer(p golParams) {
 func StopControlServer() {
 	termbox.Close()
 }
+
+/* STAGE 2A
+
+If s is pressed, generate a PGM file with the current state of the board.
+If p is pressed, pause the processing and print the current turn that is being processed. If p is pressed again resume the processing and print "Continuing".
+If q is pressed, generate a PGM file with the final state of the board and then terminate the program.
+
+for {
+	select {
+	case Key := <- :
+		switch rune {
+		case s:
+
+		case p:
+			
+		case q:
+
+		}
+	}
+}
+*/
