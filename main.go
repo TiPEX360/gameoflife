@@ -63,7 +63,7 @@ type ioChans struct {
 // It makes some channels and starts relevant goroutines.
 // It places the created channels in the relevant structs.
 // It returns an array of alive cells returned by the distributor.
-func gameOfLife(p golParams, keyChan <-chan rune) []cell {
+func gameOfLife(p golParams, key chan rune) []cell {
 	var dChans distributorChans
 	var ioChans ioChans
 
@@ -88,7 +88,6 @@ func gameOfLife(p golParams, keyChan <-chan rune) []cell {
 	ioChans.distributor.outputVal = outputVal
 
 	aliveCells := make(chan []cell)
-
 	workerChans := make([]chan byte, p.threads)
 
 	for i := 0; i < p.threads; i++ {
@@ -96,7 +95,7 @@ func gameOfLife(p golParams, keyChan <-chan rune) []cell {
 		go worker(workerChans[i], (p.imageHeight/p.threads + 2), p.imageWidth)
 	}
 
-	go distributor(p, dChans, aliveCells, workerChans)
+	go distributor(p, dChans, aliveCells, workerChans, key)
 	go pgmIo(p, ioChans)
 
 	alive := <-aliveCells
@@ -128,9 +127,12 @@ func main() {
 
 	flag.Parse()
 
-	params.turns = 10
+	params.turns = 10000000
+
+	key := make (chan rune)
 
 	startControlServer(params)
-	gameOfLife(params, nil)
+	go getKeyboardCommand(key)
+	gameOfLife(params, key)
 	StopControlServer()
 }
