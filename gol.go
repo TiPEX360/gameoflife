@@ -119,7 +119,41 @@ func outputPgmImage(p golParams, d distributorChans){
 }
 
 // distributor divides the work between workers and interacts with other goroutines.
-func distributor(p golParams, d distributorChans, alive chan []cell, workerChans []chan byte) {
+func distributor(p golParams, d distributorChans, alive chan []cell, workerChans []chan byte, key chan rune) {
+/*
+	for {
+		var Rune rune = <- key
+		select {
+			case Rune == 's':
+				outputPgmImage(p,d)
+			case Rune == 'p':
+				for (Rune != 'p'){
+				Rune <- key
+			}
+			case Rune == 'q':
+				p.turns = turn
+			default:
+				break
+
+			}
+		} */
+
+		for {
+			select{
+			case Rune := <- key:
+				if Rune == 's'{
+					outputPgmImage(p,d)
+				}
+				if Rune == 'p'{
+					//wait
+				}
+				if Rune == 'q'{
+					p.turns = turn
+				}
+			default:
+				break
+			}
+		}
 	// Create the 2D slice to store the world.
 	world := make([][]byte, p.imageHeight)
 	for i := range world {
