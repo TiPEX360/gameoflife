@@ -68,6 +68,56 @@ func makeTurn(world [][]byte, height int, width int) [][]byte {
 	return newWorld
 }
 
+//findAlive returns a list of alive cells
+func findAlive(p golParams, d distributorChans, world [][]byte) []cell {
+	var alive []cell
+	for y := 0; y < p.imageHeight; y++ {
+		for x := 0; x < p.imageWidth; x++ {
+			d.io.outputVal <- world[x][y] //Sends to channel for io to receive
+			if world[y][x] != 0 {
+				alive = append(alive, cell{x: x, y: y}) //Sets finalAlive for testing
+			}
+		}
+	}
+	return alive
+}
+
+//Send slice of original image to worker, and waits to receive new image
+func sendSliceToWorkerAndReceive(p golParams, workerChans []chan byte, world [][]byte) {
+	// Sends slice to worker
+	for turns := 0; turns < p.turns; turns++ {
+		for thread := 0; thread < p.threads; thread++ {
+			top := (thread*(p.imageHeight/p.threads) - 1)
+			bottom := ((thread + 1) * (p.imageHeight / p.threads))
+			for i := top; i <= bottom; i++ {
+				for j := 0; j <= p.imageWidth-1; j++ {
+
+					workerChans[thread] <- world[(i+p.imageHeight)%p.imageHeight][j]
+				}
+			}
+		}
+
+		//Receives slice after game of life logic from worker.
+		for thread := 0; thread < p.threads; thread++ {
+			for i := thread * (p.imageHeight / p.threads); i < (thread+1)*(p.imageHeight/p.threads); i++ {
+				for j := 0; j < p.imageWidth; j++ {
+					world[i][j] = <-workerChans[thread]
+				}
+			}
+		}
+	}
+}
+
+func outputPgmImage(p golParams, d distributorChans){
+	//Request pgmIo goroutine to output 2D slice as image
+	d.io.command <- ioOutput
+	d.io.filename <- strconv.Itoa(p.imageHeight) + "x" + strconv.Itoa(p.imageWidth) + "-" + strconv.Itoa(p.turns)
+
+	// Make sure that the Io has finished any output before exiting.
+	d.io.command <- ioCheckIdle
+	<-d.io.idle
+}
+
 // distributor divides the work between workers and interacts with other goroutines.
 func distributor(p golParams, d distributorChans, alive chan []cell, workerChans []chan byte) {
 	// Create the 2D slice to store the world.
@@ -91,42 +141,15 @@ func distributor(p golParams, d distributorChans, alive chan []cell, workerChans
 		}
 	}
 
-	// Calculate the new state of Game of Life after the given number of turns.
-	for turns := 0; turns < p.turns; turns++ {
-		for thread := 0; thread < p.threads; thread++ {
-			top := (thread*(p.imageHeight/p.threads) - 1)
-			bottom := ((thread + 1) * (p.imageHeight / p.threads))
-			for i := top; i <= bottom; i++ {
-				for j := 0; j <= p.imageWidth-1; j++ {
-
-					workerChans[thread] <- world[(i+p.imageHeight)%p.imageHeight][j]
-				}
-			}
-		}
-
-		for thread := 0; thread < p.threads; thread++ {
-			for i := thread * (p.imageHeight / p.threads); i < (thread+1)*(p.imageHeight/p.threads); i++ {
-				for j := 0; j < p.imageWidth; j++ {
-					world[i][j] = <-workerChans[thread]
-				}
-			}
-		}
-	}
+	// Sends slice to worker and receive after logic
+	sendSliceToWorkerAndReceive(p, workerChans, world)
 
 	//Request pgmIo goroutine to output 2D slice as image
 	d.io.command <- ioOutput
 	d.io.filename <- strconv.Itoa(p.imageHeight) + "x" + strconv.Itoa(p.imageWidth) + "-" + strconv.Itoa(p.turns)
-	// Create an empty slice to store coordinates of cells that a1re still alive after p.turns are done.
-	var finalAlive []cell
+
 	// Go through the world and append the cells that are still alive.
-	for y := 0; y < p.imageHeight; y++ {
-		for x := 0; x < p.imageWidth; x++ {
-			d.io.outputVal <- world[x][y] //Sends to channel for io to receive
-			if world[y][x] != 0 {
-				finalAlive = append(finalAlive, cell{x: x, y: y}) //Sets finalAlive for testing
-			}
-		}
-	}
+	var finalAlive []cell = findAlive(p, d, world)
 
 	// Make sure that the Io has finished any output before exiting.
 	d.io.command <- ioCheckIdle
@@ -136,3 +159,30 @@ func distributor(p golParams, d distributorChans, alive chan []cell, workerChans
 	alive <- finalAlive
 
 }
+
+/* STAGE 2A
+
+If s is pressed, generate a PGM file with the current state of the board.
+If p is pressed, pause the processing and print the current turn that is being processed. If p is pressed again resume the processing and print "Continuing".
+If q is pressed, generate a PGM file with the final state of the board and then terminate the program.
+
+for {
+	select {
+	case keyChan := <- :
+		switch rune {
+		case s:
+			outputPgmImage(p,d)
+		case p:
+			rune rune <- keyChan
+			while rune != 'p'{
+			rune rune <- keyChan
+			}
+		case q:
+			p.turns = turn
+		default:
+			break
+
+		}
+	}
+}
+*/
