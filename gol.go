@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
-	"time"
 )
 
 //WORKER FUNCTIONS
@@ -151,17 +150,11 @@ func distributor(p golParams, d distributorChans, alive chan []cell, workerChans
 	)
 	state := CONTINUE
 
-	for turns := 0; (turns < p.turns) && state == CONTINUE; turns++ {
-
-		ticker := time.NewTicker(2 * time.Second)
-
+	for turns := 0; (turns < p.turns) && state == CONTINUE; { //SHOULD TUNRS BE INCREMENTED EVERY TIME???
 		select {
-		case t := <-ticker.c:
-			//PRINT ALIVE CELLS
-
 		case runeInt := <-key:
-			Rune := string(runeInt)
-			switch Rune {
+			rune := string(runeInt)
+			switch rune {
 			case "s":
 				outputPgmImage(p, d)
 			case "p":
@@ -169,9 +162,9 @@ func distributor(p golParams, d distributorChans, alive chan []cell, workerChans
 				state = PAUSE
 				for state == PAUSE {
 					runeInt = <-key
-					Rune = string(runeInt)
+					rune = string(runeInt)
 
-					switch Rune {
+					switch rune {
 					case "s":
 						outputPgmImage(p, d)
 					case "q":
@@ -188,6 +181,7 @@ func distributor(p golParams, d distributorChans, alive chan []cell, workerChans
 		default:
 			// Sends slice to worker and receive after logic
 			sendSliceToWorkerAndReceive(p, workerChans, world)
+			turns++
 		}
 	}
 
