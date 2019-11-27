@@ -18,6 +18,7 @@ type ioCommand uint8
 //		ioOutput 	= 0
 //		ioInput 	= 1
 //		ioCheckIdle = 2
+
 const (
 	ioOutput ioCommand = iota
 	ioInput
@@ -127,9 +128,9 @@ func main() {
 
 	flag.Parse()
 
-	params.turns = 10000000
+	params.turns = 1000000000
 
-	key := make (chan rune)
+	key := make(chan rune)
 
 	startControlServer(params)
 	go getKeyboardCommand(key)

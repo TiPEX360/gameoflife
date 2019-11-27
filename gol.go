@@ -89,27 +89,27 @@ func findAlive(p golParams, d distributorChans, world [][]byte) []cell {
 //Send slice of original image to worker, and waits to receive new image
 func sendSliceToWorkerAndReceive(p golParams, workerChans []chan byte, world [][]byte) {
 	// Sends slice to worker
-		for thread := 0; thread < p.threads; thread++ {
-			top := (thread*(p.imageHeight/p.threads) - 1)
-			bottom := ((thread + 1) * (p.imageHeight / p.threads))
-			for i := top; i <= bottom; i++ {
-				for j := 0; j <= p.imageWidth-1; j++ {
-					workerChans[thread] <- world[(i+p.imageHeight)%p.imageHeight][j]
-				}
+	for thread := 0; thread < p.threads; thread++ {
+		top := (thread*(p.imageHeight/p.threads) - 1)
+		bottom := ((thread + 1) * (p.imageHeight / p.threads))
+		for i := top; i <= bottom; i++ {
+			for j := 0; j <= p.imageWidth-1; j++ {
+				workerChans[thread] <- world[(i+p.imageHeight)%p.imageHeight][j]
 			}
 		}
+	}
 
-		//receive slice from worker
-		for thread := 0; thread < p.threads; thread++ {
-			for i := thread * (p.imageHeight / p.threads); i < (thread+1)*(p.imageHeight/p.threads); i++ {
-				for j := 0; j < p.imageWidth; j++ {
-					world[i][j] = <-workerChans[thread]
-				}
+	//receive slice from worker
+	for thread := 0; thread < p.threads; thread++ {
+		for i := thread * (p.imageHeight / p.threads); i < (thread+1)*(p.imageHeight/p.threads); i++ {
+			for j := 0; j < p.imageWidth; j++ {
+				world[i][j] = <-workerChans[thread]
 			}
 		}
+	}
 }
 
-func outputPgmImage(p golParams, d distributorChans){
+func outputPgmImage(p golParams, d distributorChans) {
 	//Request pgmIo goroutine to output 2D slice as image
 	d.io.command <- ioOutput
 	d.io.filename <- strconv.Itoa(p.imageHeight) + "x" + strconv.Itoa(p.imageWidth) + "-" + strconv.Itoa(p.turns)
@@ -140,48 +140,52 @@ func distributor(p golParams, d distributorChans, alive chan []cell, workerChans
 		}
 	}
 
-loop:
-	for turns := 0; turns < p.turns; turns++ {
-			select{
-			case runeInt := <- key:
-				Rune := string(runeInt)
-				//If s is pressed, generate a PGM file with the current state of the board.
-				if Rune == "s"{
-					outputPgmImage(p,d)
-				}
-				//If p is pressed, pause the processing and print the current turn that is being processed. If p is pressed again resume the processing and print "Continuing".
-				if Rune == "p"{
-					fmt.Println("Waiting....")
-					for {
-						runeInt := <- key
-						Rune := string(runeInt)
-						if Rune == "s"{
-							outputPgmImage(p, d)
-						} else if Rune == "q" {
-							outputPgmImage(p,d)
-							break loop
-						} else if Rune == "p" {
-							fmt.Println("Continuing...")
-							break
-						}
+	// Program state enum
+	type progState uint8
 
+	const (
+		STOP progState = iota
+		PAUSE
+		CONTINUE
+	)
+	state := CONTINUE
+
+	for turns := 0; (turns < p.turns) && state == CONTINUE; turns++ {
+		select {
+		case runeInt := <-key:
+			Rune := string(runeInt)
+			switch Rune {
+			case "s":
+				outputPgmImage(p, d)
+			case "p":
+				fmt.Println("Waiting...")
+				state = PAUSE
+				for state == PAUSE {
+					runeInt = <-key
+					Rune = string(runeInt)
+
+					switch Rune {
+					case "s":
+						outputPgmImage(p, d)
+					case "q":
+						state = STOP
+					case "p":
+						fmt.Println("Continuing...")
+						state = CONTINUE
 					}
-
 				}
-				//If q is pressed, generate a PGM file with the final state of the board and then terminate the program.
-				if Rune == "q"{
-					outputPgmImage(p,d)
-					break loop
-				}
-			default:
-				// Sends slice to worker and receive after logic
-				sendSliceToWorkerAndReceive(p, workerChans, world)
-
+			case "q":
+				state = STOP
 			}
+
+		default:
+			// Sends slice to worker and receive after logic
+			sendSliceToWorkerAndReceive(p, workerChans, world)
 		}
+	}
 
 	//Request pgmIo goroutine to output 2D slice as image
-	outputPgmImage(p,d)
+	outputPgmImage(p, d)
 
 	// Go through the world and append the cells that are still alive.
 	var finalAlive []cell = findAlive(p, d, world)
