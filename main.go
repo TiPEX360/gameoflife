@@ -91,9 +91,16 @@ func gameOfLife(p golParams, key chan rune) []cell {
 	aliveCells := make(chan []cell)
 	workerChans := make([]chan byte, p.threads)
 
+	remainder := p.imageHeight % p.threads
+
 	for i := 0; i < p.threads; i++ {
 		workerChans[i] = make(chan byte)
-		go worker(workerChans[i], (p.imageHeight/p.threads + 2), p.imageWidth)
+		if remainder > i {
+			go worker(workerChans[i], (p.imageHeight/p.threads + 3), p.imageWidth)
+
+		} else {
+			go worker(workerChans[i], (p.imageHeight/p.threads + 2), p.imageWidth)
+		}
 	}
 
 	go distributor(p, dChans, aliveCells, workerChans, key)

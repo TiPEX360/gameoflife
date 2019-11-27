@@ -89,9 +89,27 @@ func findAlive(p golParams, d distributorChans, world [][]byte) []cell {
 //Send slice of original image to worker, and waits to receive new image
 func sendSliceToWorkerAndReceive(p golParams, workerChans []chan byte, world [][]byte) {
 	// Sends slice to worker
+
+	bounds := make([][]int, p.threads)
+	for i := 0; i < p.threads; i++ {
+		bounds[i] = make([]int, 2)
+	}
+
+	offset := 0
 	for thread := 0; thread < p.threads; thread++ {
 		top := (thread*(p.imageHeight/p.threads) - 1)
 		bottom := ((thread + 1) * (p.imageHeight / p.threads))
+		if (p.imageHeight % p.threads) > thread {
+			top += offset
+			bottom += offset + 1
+			offset++
+		} else {
+			top += offset
+			bottom += offset
+		}
+
+		bounds[thread][0] = top
+		bounds[thread][1] = bottom
 		for i := top; i <= bottom; i++ {
 			for j := 0; j <= p.imageWidth-1; j++ {
 				workerChans[thread] <- world[(i+p.imageHeight)%p.imageHeight][j]
@@ -101,7 +119,8 @@ func sendSliceToWorkerAndReceive(p golParams, workerChans []chan byte, world [][
 
 	//receive slice from worker
 	for thread := 0; thread < p.threads; thread++ {
-		for i := thread * (p.imageHeight / p.threads); i < (thread+1)*(p.imageHeight/p.threads); i++ {
+		for i := bounds[thread][0] + 1; i < bounds[thread][1]; i++ {
+			//fmt.Println(i)
 			for j := 0; j < p.imageWidth; j++ {
 				world[i][j] = <-workerChans[thread]
 			}
