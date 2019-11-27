@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"time"
 )
 
 //WORKER FUNCTIONS
@@ -77,7 +78,6 @@ func findAlive(p golParams, d distributorChans, world [][]byte) []cell {
 	var alive []cell
 	for y := 0; y < p.imageHeight; y++ {
 		for x := 0; x < p.imageWidth; x++ {
-			d.io.outputVal <- world[x][y] //Sends to channel for io to receive
 			if world[y][x] != 0 {
 				alive = append(alive, cell{x: x, y: y}) //Sets finalAlive for testing
 			}
@@ -156,8 +156,14 @@ func distributor(p golParams, d distributorChans, alive chan []cell, workerChans
 	)
 	state := CONTINUE
 
+	timer := time.NewTicker(2 * time.Second)
+
 	for turn := 0; (turn < p.turns) && (state == CONTINUE); {
+
 		select {
+		case <-timer.C:
+			alive := findAlive(p, d, world)
+			fmt.Println("Alive cells: ", len(alive))
 		case runeInt := <-key:
 			rune := string(runeInt)
 			switch rune {
@@ -189,12 +195,11 @@ func distributor(p golParams, d distributorChans, alive chan []cell, workerChans
 			sendSliceToWorkerAndReceive(p, workerChans, world)
 			turn++
 		}
-		fmt.Println(turn)
+		//fmt.Println(turn)
 	}
 
 	//Request pgmIo goroutine to output 2D slice as image
-	d.io.command <- ioOutput
-	d.io.filename <- strconv.Itoa(p.imageHeight) + "x" + strconv.Itoa(p.imageWidth) + "-" + strconv.Itoa(p.turns)
+	outputPgmImage(p, d, world, p.turns)
 
 	// Go through the world and append the cells that are still alive.
 	var finalAlive []cell = findAlive(p, d, world)
