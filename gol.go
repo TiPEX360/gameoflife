@@ -109,11 +109,17 @@ func sendSliceToWorkerAndReceive(p golParams, workerChans []chan byte, world [][
 	}
 }
 
-func outputPgmImage(p golParams, d distributorChans) {
+func outputPgmImage(p golParams, d distributorChans, world [][]byte, turn int) {
 	//Request pgmIo goroutine to output 2D slice as image
+	fmt.Println("Output in progress...")
 	d.io.command <- ioOutput
-	d.io.filename <- strconv.Itoa(p.imageHeight) + "x" + strconv.Itoa(p.imageWidth) + "-" + strconv.Itoa(p.turns)
-	fmt.Println("outputted")
+	d.io.filename <- strconv.Itoa(p.imageHeight) + "x" + strconv.Itoa(p.imageWidth) + "-" + strconv.Itoa(turn)
+
+	for y := 0; y < p.imageHeight; y++ {
+		for x := 0; x < p.imageWidth; x++ {
+			d.io.outputVal <- world[x][y] //Sends to channel for io to receive
+		}
+	}
 }
 
 // distributor divides the work between workers and interacts with other goroutines.
@@ -150,14 +156,13 @@ func distributor(p golParams, d distributorChans, alive chan []cell, workerChans
 	)
 	state := CONTINUE
 
-	for turns := 0; (turns < p.turns) && (state == CONTINUE); { //SHOULD TUNRS BE INCREMENTED EVERY TIME???
+	for turn := 0; (turn < p.turns) && (state == CONTINUE); {
 		select {
 		case runeInt := <-key:
 			rune := string(runeInt)
 			switch rune {
 			case "s":
-				fmt.Println("outputting")
-				outputPgmImage(p, d)
+				outputPgmImage(p, d, world, turn)
 			case "p":
 				fmt.Println("Waiting...")
 				state = PAUSE
@@ -167,8 +172,7 @@ func distributor(p golParams, d distributorChans, alive chan []cell, workerChans
 
 					switch rune {
 					case "s":
-						fmt.Println("outputting")
-						outputPgmImage(p, d)
+						outputPgmImage(p, d, world, turn)
 					case "q":
 						state = STOP
 					case "p":
@@ -183,13 +187,14 @@ func distributor(p golParams, d distributorChans, alive chan []cell, workerChans
 		default:
 			// Sends slice to worker and receive after logic
 			sendSliceToWorkerAndReceive(p, workerChans, world)
-			turns++
+			turn++
 		}
-		fmt.Println(turns)
+		fmt.Println(turn)
 	}
 
 	//Request pgmIo goroutine to output 2D slice as image
-	outputPgmImage(p, d)
+	d.io.command <- ioOutput
+	d.io.filename <- strconv.Itoa(p.imageHeight) + "x" + strconv.Itoa(p.imageWidth) + "-" + strconv.Itoa(p.turns)
 
 	// Go through the world and append the cells that are still alive.
 	var finalAlive []cell = findAlive(p, d, world)
@@ -200,5 +205,4 @@ func distributor(p golParams, d distributorChans, alive chan []cell, workerChans
 
 	// Return the coordinates of cells that are still alive.
 	alive <- finalAlive
-
 }

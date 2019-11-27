@@ -1,6 +1,5 @@
 package main
 
-
 import (
 	"fmt"
 	"io/ioutil"
@@ -51,7 +50,6 @@ func writePgmImage(p golParams, i ioChans) {
 			check(ioError)
 		}
 	}
-
 	ioError = file.Sync()
 	check(ioError)
 
@@ -103,6 +101,7 @@ func pgmIo(p golParams, i ioChans) {
 				readPgmImage(p, i)
 			case ioOutput:
 				writePgmImage(p, i)
+
 			case ioCheckIdle:
 				i.distributor.idle <- true
 			}
