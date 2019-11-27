@@ -113,7 +113,7 @@ func outputPgmImage(p golParams, d distributorChans) {
 	//Request pgmIo goroutine to output 2D slice as image
 	d.io.command <- ioOutput
 	d.io.filename <- strconv.Itoa(p.imageHeight) + "x" + strconv.Itoa(p.imageWidth) + "-" + strconv.Itoa(p.turns)
-
+	fmt.Println("outputted")
 }
 
 // distributor divides the work between workers and interacts with other goroutines.
@@ -150,12 +150,13 @@ func distributor(p golParams, d distributorChans, alive chan []cell, workerChans
 	)
 	state := CONTINUE
 
-	for turns := 0; (turns < p.turns) && state == CONTINUE; { //SHOULD TUNRS BE INCREMENTED EVERY TIME???
+	for turns := 0; (turns < p.turns) && (state == CONTINUE); { //SHOULD TUNRS BE INCREMENTED EVERY TIME???
 		select {
 		case runeInt := <-key:
 			rune := string(runeInt)
 			switch rune {
 			case "s":
+				fmt.Println("outputting")
 				outputPgmImage(p, d)
 			case "p":
 				fmt.Println("Waiting...")
@@ -182,6 +183,7 @@ func distributor(p golParams, d distributorChans, alive chan []cell, workerChans
 			// Sends slice to worker and receive after logic
 			sendSliceToWorkerAndReceive(p, workerChans, world)
 			turns++
+			fmt.Println(turns)
 		}
 	}
 
