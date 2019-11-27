@@ -167,6 +167,7 @@ func distributor(p golParams, d distributorChans, alive chan []cell, workerChans
 
 					switch rune {
 					case "s":
+						fmt.Println("outputting")
 						outputPgmImage(p, d)
 					case "q":
 						state = STOP
@@ -183,8 +184,8 @@ func distributor(p golParams, d distributorChans, alive chan []cell, workerChans
 			// Sends slice to worker and receive after logic
 			sendSliceToWorkerAndReceive(p, workerChans, world)
 			turns++
-			fmt.Println(turns)
 		}
+		fmt.Println(turns)
 	}
 
 	//Request pgmIo goroutine to output 2D slice as image
