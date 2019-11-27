@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"time"
 )
 
 //WORKER FUNCTIONS
@@ -151,7 +152,13 @@ func distributor(p golParams, d distributorChans, alive chan []cell, workerChans
 	state := CONTINUE
 
 	for turns := 0; (turns < p.turns) && state == CONTINUE; turns++ {
+
+		ticker := time.NewTicker(2 * time.Second)
+
 		select {
+		case t := <-ticker.c:
+			//PRINT ALIVE CELLS
+
 		case runeInt := <-key:
 			Rune := string(runeInt)
 			switch Rune {
