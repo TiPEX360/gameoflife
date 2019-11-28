@@ -60,6 +60,28 @@ type ioChans struct {
 	distributor ioToDistributor
 }
 
+type outChans struct {
+	tChan chan<- byte
+	bChan chan<- byte
+}
+
+type inChans struct {
+	tChan <-chan byte
+	bChan <-chan byte
+}
+
+type chanType uint8
+
+// It will evaluate to:
+//		WORLD 	= 0
+//		TOP 	= 1
+//		BOTTOM  = 2
+const (
+	WORLD chanType = iota
+	TOP
+	BOTTOM
+)
+
 // gameOfLife is the function called by the testing framework.
 // It makes some channels and starts relevant goroutines.
 // It places the created channels in the relevant structs.
@@ -89,17 +111,29 @@ func gameOfLife(p golParams, key chan rune) []cell {
 	ioChans.distributor.outputVal = outputVal
 
 	aliveCells := make(chan []cell)
-	workerChans := make([]chan byte, p.threads)
+	workerChans := make([][]chan byte, p.threads)
 
 	remainder := p.imageHeight % p.threads
 
 	for i := 0; i < p.threads; i++ {
-		workerChans[i] = make(chan byte)
+		workerChans[i] = make([]chan byte, 3)
+		for j := 0; j < 3; j++ {
+			workerChans[i][j] = make(chan byte)
+		}
+
+		var in inChans
+		var out outChans
+
+		in.tChan = workerChans[(i-1)%p.threads][TOP]
+		in.bChan = workerChans[(i+1)%p.threads][BOTTOM]
+		out.tChan = workerChans[i][TOP]
+		out.bChan = workerChans[i][BOTTOM]
+
 		if remainder > i {
-			go worker(workerChans[i], (p.imageHeight/p.threads + 3), p.imageWidth)
+			go worker(in, out, workerChans[i][WORLD], (p.imageHeight/p.threads + 3), p.imageWidth)
 
 		} else {
-			go worker(workerChans[i], (p.imageHeight/p.threads + 2), p.imageWidth)
+			go worker(in, out, workerChans[i][WORLD], (p.imageHeight/p.threads + 2), p.imageWidth)
 		}
 	}
 

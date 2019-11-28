@@ -9,27 +9,29 @@ import (
 
 //WORKER FUNCTIONS
 
-func worker(wChan chan byte, height int, width int) {
-	//Create empty slice for world chunk
+func worker(in inChans, out outChans, wChan chan byte, height int, width int) {
+	//Create empty slice for world chunk WITH
 	world := make([][]byte, height)
 	for i := range world {
 		world[i] = make([]byte, width)
 	}
 
 	for {
-		for i := 0; i < height; i++ {
+		for i := 1; i < height-1; i++ {
 			for j := 0; j < width; j++ {
 				world[i][j] = <-wChan
 			}
 		}
 
-		world = makeTurn(world, height, width)
-
-		for i := 1; i < height-1; i++ {
-			for j := 0; j < width; j++ {
-				wChan <- world[i][j]
-			}
+		//if deadlock try 2 for loops
+		for j := 0; j < width; j++ {
+			out.tChan <- world[1][j]
+			out.bChan <- world[height-1][j]
+			world[0][j] = <-in.tChan
+			world[height-1][j] = <-in.bChan
 		}
+
+		world = makeTurn(world, height, width)
 	}
 }
 
@@ -87,7 +89,7 @@ func findAlive(p golParams, d distributorChans, world [][]byte) []cell {
 }
 
 //Send slice of original image to worker, and waits to receive new image
-func sendSliceToWorkerAndReceive(p golParams, workerChans []chan byte, world [][]byte) {
+func sendSliceToWorkerAndReceive(p golParams, workerChans [][]chan byte, world [][]byte) {
 	// Sends slice to worker
 
 	bounds := make([][]int, p.threads)
@@ -112,7 +114,7 @@ func sendSliceToWorkerAndReceive(p golParams, workerChans []chan byte, world [][
 		bounds[thread][1] = bottom
 		for i := top; i <= bottom; i++ {
 			for j := 0; j <= p.imageWidth-1; j++ {
-				workerChans[thread] <- world[(i+p.imageHeight)%p.imageHeight][j]
+				workerChans[thread][WORLD] <- world[(i+p.imageHeight)%p.imageHeight][j]
 			}
 		}
 	}
@@ -122,7 +124,7 @@ func sendSliceToWorkerAndReceive(p golParams, workerChans []chan byte, world [][
 		for i := bounds[thread][0] + 1; i < bounds[thread][1]; i++ {
 			//fmt.Println(i)
 			for j := 0; j < p.imageWidth; j++ {
-				world[i][j] = <-workerChans[thread]
+				world[i][j] = <-workerChans[thread][WORLD]
 			}
 		}
 	}
@@ -142,7 +144,7 @@ func outputPgmImage(p golParams, d distributorChans, world [][]byte, turn int) {
 }
 
 // distributor divides the work between workers and interacts with other goroutines.
-func distributor(p golParams, d distributorChans, alive chan []cell, workerChans []chan byte, key chan rune) {
+func distributor(p golParams, d distributorChans, alive chan []cell, workerChans [][]chan byte, key chan rune) {
 
 	// Create the 2D slice to store the world.
 	world := make([][]byte, p.imageHeight)
