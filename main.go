@@ -153,13 +153,14 @@ func gameOfLife(p golParams, key chan rune) []cell {
 		in.bChan = workerChans[(i+1)%p.threads][TOPROW]
 		out.tChan = workerChans[i][TOPROW]
 		out.bChan = workerChans[i][BOTTOMROW]
-
+		var offset int
 		if remainder > i {
-			go worker(in, out, workerChans[i][WORLD], (p.imageHeight/p.threads + 3), p.imageWidth, comChans[i])
-
+			offset = 3
 		} else {
-			go worker(in, out, workerChans[i][WORLD], (p.imageHeight/p.threads + 2), p.imageWidth, comChans[i])
+			offset = 2
 		}
+		go worker(in, out, workerChans[i][WORLD], (p.imageHeight/p.threads + offset), p.imageWidth, comChans[i])
+
 	}
 
 	go distributor(p, dChans, aliveCells, workerChans, key, comChans)
