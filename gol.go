@@ -7,71 +7,43 @@ import (
 	"time"
 )
 
-//WORKER FUNCTIONS
-
-func worker(in inChans, out outChans, wChan chan byte, height int, width int, p golParams, coms chan workerComs, even bool) {
-	//Create empty slice for world chunk
+func worker(in inChans, out outChans, wChan chan byte, height int, width int, coms chan workerComs) {
+	// World slice for the worker INCLUDING HALOS
 	world := make([][]byte, height)
 	for i := range world {
 		world[i] = make([]byte, width)
 	}
 
-	for i := 1; i < height-1; i++ {
-		for j := 0; j < width; j++ {			
-			world[i][j] = <-wChan
-		}
-	}	
 	for {
 		select {
-		case command:= <-coms:	
-			switch(command) {
-
-			case OUTPUT:
-				for i := 1; i < height - 1; i++ {
-					for j:=0; j < width; i++ {
-						wChan <- world[i][j]
+		case command := <-coms: //Assign new command if available
+			switch command {
+			case INPUT:
+				for y := 1; y < height-1; y++ {
+					for x := 0; x < width; x++ {
+						world[y][x] = <-wChan
 					}
 				}
-
-			case STARTTURN:
-			if even{
-				for j := 0; j < width; j++ {
-						out.tChan <- world[1][j]
-						out.bChan <- world[height-2][j]
+			case OUTPUT:
+				for y := 1; y < height-1; y++ {
+					for x := 0; x < width; x++ {
+						wChan <- world[y][x]
+					}
 				}
-				
-				for j := 0; j < width; j++ {
-						world[height-1][j] = <-in.bChan
-						world[0][j] = <-in.tChan
-				}					
-			} else {
-				for j := 0; j < width; j++ {
-					world[height-1][j] = <-in.bChan
-					world[0][j] = <-in.tChan
-				
+			case WORK:
+				for x := 0; x < width; x++ {
+					out.tChan <- world[1][x]
+					out.bChan <- world[height-2][x]
+					world[0][x] = <-in.tChan
+					world[height-1][x] = <-in.bChan
 				}
-				for j := 0; j < width; j++ {
-					out.tChan <- world[1][j]
-					out.bChan <- world[height-2][j]
-				}	
-			}		
-
-			world = makeTurn(world, height, width)
-			
-			case RETURNWORLD:
-				fmt.Println("returning...")
-			for i := 1; i < height - 1; i++ {
-				for j:=0; j < width; j++ {
-					wChan <- world[i][j]
-				}
-			}
-			fmt.Println("returning complete")
+				world = makeTurn(world, height, width)
 			}
 		}
 	}
 }
 
-
+// Processes game logic on a given slice
 func makeTurn(world [][]byte, height int, width int) [][]byte {
 	//Create new empty world slice
 	newWorld := make([][]byte, height)
@@ -106,12 +78,11 @@ func makeTurn(world [][]byte, height int, width int) [][]byte {
 		}
 	}
 
-	//Return newWorld
 	return newWorld
 }
 
-func findBounds(p golParams) [][]int{
-	// Sends slice to worker
+// Returns the inclusive bounds that each worker should process. Does not include halos. || Could this be optimized?
+func findBounds(p golParams) [][]int {
 	bounds := make([][]int, p.threads)
 	for i := 0; i < p.threads; i++ {
 		bounds[i] = make([]int, 2)
@@ -119,15 +90,12 @@ func findBounds(p golParams) [][]int{
 
 	offset := 0
 	for thread := 0; thread < p.threads; thread++ {
-		top := (thread*(p.imageHeight/p.threads))
-		bottom := ((thread + 1) * (p.imageHeight / p.threads) - 1)
+		top := (thread * (p.imageHeight / p.threads)) + offset
+		bottom := ((thread+1)*(p.imageHeight/p.threads) - 1) + offset
+
 		if (p.imageHeight % p.threads) > thread {
-			top += offset
-			bottom += offset + 1
+			bottom++
 			offset++
-		} else {
-			top += offset
-			bottom += offset
 		}
 
 		bounds[thread][0] = top
@@ -136,10 +104,8 @@ func findBounds(p golParams) [][]int{
 	return bounds
 }
 
-//DISTRIBUTOR FUNCTIONS
-
-//findAlive returns a list of alive cells
-func findAlive(p golParams, d distributorChans, world [][]byte) []cell {
+// Returns an array of alive cells in a given world
+func findAlive(p golParams, world [][]byte) []cell {
 	var alive []cell
 	for y := 0; y < p.imageHeight; y++ {
 		for x := 0; x < p.imageWidth; x++ {
@@ -151,31 +117,31 @@ func findAlive(p golParams, d distributorChans, world [][]byte) []cell {
 	return alive
 }
 
-//Send slice of original image to worker, and waits to receive new image
-func sendSliceToWorker(p golParams, workerChans [][]chan byte, world [][]byte, bounds [][]int) {
+// Sends the current world section to each worker
+func sendWorld(p golParams, workerChans [][]chan byte, world [][]byte, bounds [][]int) {
 	for thread := 0; thread < p.threads; thread++ {
 		top := bounds[thread][0]
 		bottom := bounds[thread][1]
-		for i := top; i <= bottom; i++ {
-			for j := 0; j <= p.imageWidth-1; j++ {
-				workerChans[thread][WORLD] <- world[(i+p.imageHeight)%p.imageHeight][j]
+		for y := top; y <= bottom; y++ {
+			for x := 0; x < p.imageWidth; x++ {
+				workerChans[thread][WORLD] <- world[y][x]
 			}
 		}
 	}
 }
 
-//Worker sends slice to distribtor
-func receiveWorld(p golParams, workerChans [][]chan byte, world [][]byte, bounds [][]int) {	
-	//receive slice from worker
+// Receives the world from all workers
+func receiveWorld(p golParams, workerChans [][]chan byte, world [][]byte, bounds [][]int) {
 	for thread := 0; thread < p.threads; thread++ {
-		for i := bounds[thread][0] + 1; i < bounds[thread][1]; i++ {
-			for j := 0; j < p.imageWidth; j++ {
-				world[i][j] = <-workerChans[thread][WORLD]
+		for y := bounds[thread][0]; y <= bounds[thread][1]; y++ {
+			for x := 0; x < p.imageWidth; x++ {
+				world[y][x] = <-workerChans[thread][WORLD]
 			}
-		} 
+		}
 	}
 }
 
+// Outputs current world as PGM
 func outputPgmImage(p golParams, d distributorChans, world [][]byte) {
 	//Request pgmIo goroutine to output 2D slice as image
 	fmt.Println("Output in progress...")
@@ -189,27 +155,24 @@ func outputPgmImage(p golParams, d distributorChans, world [][]byte) {
 	}
 }
 
-func sendCommandToWorkers(p golParams, comChans []chan workerComs, command workerComs){
-
+// Sends a given command to each worker
+func sendCommand(p golParams, comChans []chan workerComs, command workerComs) {
 	fmt.Println("sending commands")
 	fmt.Println(command)
-	for i := 0; i < p.threads; i++{
+	for i := 0; i < p.threads; i++ {
 		comChans[i] <- command
 	}
 	fmt.Println("Sent commands")
 }
 
 // distributor divides the work between workers and interacts with other goroutines.
-func distributor(p golParams, d distributorChans, alive chan []cell, workerChans [][]chan byte, key chan rune, comChans []chan workerComs){
+func distributor(p golParams, d distributorChans, alive chan []cell, workerChans [][]chan byte, key chan rune, comChans []chan workerComs) {
 
 	// Create the 2D slice to store the world.
 	world := make([][]byte, p.imageHeight)
 	for i := range world {
 		world[i] = make([]byte, p.imageWidth)
 	}
-
-
-
 
 	// Request the io goroutine to read in the image with the given filename.
 	d.io.command <- ioInput
@@ -223,65 +186,64 @@ func distributor(p golParams, d distributorChans, alive chan []cell, workerChans
 			}
 		}
 	}
-	
-	//Find bounds
+
 	bounds := findBounds(p)
-	sendSliceToWorker(p, workerChans, world, bounds)
-	fmt.Println(p.threads)
-	
+
+	//Send initial world to workers
+	sendCommand(p, comChans, INPUT)
+	sendWorld(p, workerChans, world, bounds)
+
 	timer := time.NewTicker(2 * time.Second)
 
-
-	for turn := 0; turn < p.turns;{
+	state := CONTINUE
+	for turn := 0; (turn < p.turns) && (state == CONTINUE); {
 		select {
-		case <-timer.C:	
+		case <-timer.C:
+			sendCommand(p, comChans, OUTPUT)
 			receiveWorld(p, workerChans, world, bounds)
-			alive := findAlive(p, d, world)
+			alive := findAlive(p, world)
 			fmt.Println("Alive cells: ", len(alive))
 		case runeInt := <-key:
 			rune := string(runeInt)
 			switch rune {
 			case "s":
-				//send command for workers to send image
+				sendCommand(p, comChans, OUTPUT)
 				receiveWorld(p, workerChans, world, bounds)
 				outputPgmImage(p, d, world)
 			case "p":
+				state = PAUSE
 				fmt.Println("Waiting...")
-				for {
+				for state == PAUSE {
 					runeInt = <-key
 					rune = string(runeInt)
-
 					switch rune {
 					case "s":
+						sendCommand(p, comChans, OUTPUT)
+						receiveWorld(p, workerChans, world, bounds)
 						outputPgmImage(p, d, world)
 					case "q":
+						state = STOP
 					case "p":
+						state = CONTINUE
 						fmt.Println("Continuing...")
 					}
 				}
 			case "q":
+				state = STOP
 			}
 		default:
-			command := STARTTURN
-			sendCommandToWorkers(p, comChans, command)
+			sendCommand(p, comChans, WORK)
 			turn++
 		}
 	}
 
-	//Request pgmIo goroutine to output 2D slice as image
-
-	
-	command := RETURNWORLD
-	sendCommandToWorkers(p, comChans, command)
-	fmt.Println("HERE")
+	// Receive world after all turns have been completed
+	sendCommand(p, comChans, OUTPUT)
 	receiveWorld(p, workerChans, world, bounds)
-	fmt.Println("bloop2")
-
 	outputPgmImage(p, d, world)
-	fmt.Println("bloop3")
 
 	// Go through the world and append the cells that are still alive.
-	var finalAlive []cell = findAlive(p, d, world)
+	finalAlive := findAlive(p, world)
 
 	// Make sure that the Io has finished any output before exiting.
 	d.io.command <- ioCheckIdle

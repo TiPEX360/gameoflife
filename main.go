@@ -27,9 +27,9 @@ const (
 	ioCheckIdle
 )
 
-// Program state enum
 type progState uint8
 
+// Program state enum
 const (
 	STOP progState = iota
 	PAUSE
@@ -83,14 +83,13 @@ type inChans struct {
 
 type chanType uint8
 
-// It will evaluate to:
-//		WORLD 	= 0
-//		TOP 	= 1
-//		BOTTOM  = 2
+// WORLD: contains the world the worker is allocated
+// TOPROW: contains the top halo
+// BOTTOMROW: contains the bottom halo
 const (
 	WORLD chanType = iota
-	TOP
-	BOTTOM
+	TOPROW
+	BOTTOMROW
 )
 
 type workerComs uint8
@@ -99,8 +98,9 @@ type workerComs uint8
 //		OUTPUT 	= 0
 const (
 	OUTPUT workerComs = iota
-	STARTTURN
-	RETURNWORLD
+	INPUT
+	WORK
+	IDLE
 )
 
 // gameOfLife is the function called by the testing framework.
@@ -132,43 +132,33 @@ func gameOfLife(p golParams, key chan rune) []cell {
 	ioChans.distributor.outputVal = outputVal
 
 	aliveCells := make(chan []cell)
+
 	workerChans := make([][]chan byte, p.threads)
-
 	comChans := make([]chan workerComs, p.threads)
-
-	remainder := p.imageHeight % p.threads
-
 	for i := 0; i < p.threads; i++ {
-		comChans[i] = make (chan workerComs)
-		workerChans[i] = make([]chan byte, 4)
+		workerChans[i] = make([]chan byte, 3)
 		for j := 0; j < 3; j++ {
-			workerChans[i][j] = make(chan byte)
+			workerChans[i][j] = make(chan byte, 1) // Made buffered
 		}
+		comChans[i] = make(chan workerComs)
 	}
 
+	remainder := p.imageHeight % p.threads
 	for i := 0; i < p.threads; i++ {
 
 		var in inChans
 		var out outChans
 
-		in.tChan = workerChans[(i-1+p.threads)%p.threads][BOTTOM]
-		in.bChan = workerChans[(i+1)%p.threads][TOP]
-		out.tChan = workerChans[i][TOP]
-		out.bChan = workerChans[i][BOTTOM]
-
-		var even bool
-		if (i % 2)==0{
-			even = true
-		} else {
-			even = false
-		}
-		
+		in.tChan = workerChans[(i-1+p.threads)%p.threads][BOTTOMROW]
+		in.bChan = workerChans[(i+1)%p.threads][TOPROW]
+		out.tChan = workerChans[i][TOPROW]
+		out.bChan = workerChans[i][BOTTOMROW]
 
 		if remainder > i {
-			go worker(in, out, workerChans[i][WORLD], (p.imageHeight/p.threads + 3), p.imageWidth, p, comChans[i], even)
+			go worker(in, out, workerChans[i][WORLD], (p.imageHeight/p.threads + 3), p.imageWidth, comChans[i])
 
 		} else {
-			go worker(in, out, workerChans[i][WORLD], (p.imageHeight/p.threads + 2), p.imageWidth, p, comChans[i], even)
+			go worker(in, out, workerChans[i][WORLD], (p.imageHeight/p.threads + 2), p.imageWidth, comChans[i])
 		}
 	}
 
