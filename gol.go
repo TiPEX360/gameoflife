@@ -157,12 +157,9 @@ func outputPgmImage(p golParams, d distributorChans, world [][]byte) {
 
 // Sends a given command to each worker
 func sendCommand(p golParams, comChans []chan workerComs, command workerComs) {
-	fmt.Println("sending commands")
-	fmt.Println(command)
 	for i := 0; i < p.threads; i++ {
 		comChans[i] <- command
 	}
-	fmt.Println("Sent commands")
 }
 
 // distributor divides the work between workers and interacts with other goroutines.
