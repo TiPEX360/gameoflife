@@ -176,10 +176,10 @@ func Test(t *testing.T) {
 			},
 		}},
 
-		{"16x16x9-100", args{
+		{"16x16x8-100", args{
 			p: golParams{
 				turns:       100,
-				threads:     9,
+				threads:     8,
 				imageWidth:  16,
 				imageHeight: 16,
 			},

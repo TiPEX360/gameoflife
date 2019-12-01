@@ -1,6 +1,8 @@
 package main
 
-import "flag"
+import (
+	"flag"
+)
 
 // golParams provides the details of how to run the Game of Life and which image to load.
 type golParams struct {
@@ -97,6 +99,8 @@ type workerComs uint8
 //		OUTPUT 	= 0
 const (
 	OUTPUT workerComs = iota
+	STARTTURN
+	RETURNWORLD
 )
 
 // gameOfLife is the function called by the testing framework.
@@ -135,28 +139,40 @@ func gameOfLife(p golParams, key chan rune) []cell {
 	remainder := p.imageHeight % p.threads
 
 	for i := 0; i < p.threads; i++ {
-		workerChans[i] = make([]chan byte, 3)
+		comChans[i] = make (chan workerComs)
+		workerChans[i] = make([]chan byte, 4)
 		for j := 0; j < 3; j++ {
 			workerChans[i][j] = make(chan byte)
 		}
+	}
+
+	for i := 0; i < p.threads; i++ {
 
 		var in inChans
 		var out outChans
 
-		in.tChan = workerChans[(i-1+p.threads)%p.threads][TOP]
-		in.bChan = workerChans[(i+1)%p.threads][BOTTOM]
+		in.tChan = workerChans[(i-1+p.threads)%p.threads][BOTTOM]
+		in.bChan = workerChans[(i+1)%p.threads][TOP]
 		out.tChan = workerChans[i][TOP]
 		out.bChan = workerChans[i][BOTTOM]
 
+		var even bool
+		if (i % 2)==0{
+			even = true
+		} else {
+			even = false
+		}
+		
+
 		if remainder > i {
-			go worker(in, out, workerChans[i][WORLD], (p.imageHeight/p.threads + 3), p.imageWidth, p, comChans[i])
+			go worker(in, out, workerChans[i][WORLD], (p.imageHeight/p.threads + 3), p.imageWidth, p, comChans[i], even)
 
 		} else {
-			go worker(in, out, workerChans[i][WORLD], (p.imageHeight/p.threads + 2), p.imageWidth, p, comChans[i])
+			go worker(in, out, workerChans[i][WORLD], (p.imageHeight/p.threads + 2), p.imageWidth, p, comChans[i], even)
 		}
 	}
 
-	go distributor(p, dChans, aliveCells, workerChans, key)
+	go distributor(p, dChans, aliveCells, workerChans, key, comChans)
 	go pgmIo(p, ioChans)
 
 	alive := <-aliveCells
