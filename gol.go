@@ -47,12 +47,8 @@ func worker(in inChans, out outChans, wChan chan byte, height int, width int, co
 func makeTurn(world [][]byte, height int, width int) [][]byte {
 	//Create new empty world slice
 	newWorld := make([][]byte, height)
-	for i := range newWorld {
-		newWorld[i] = make([]byte, width)
-	}
-
-	//Fill new empty world with alive cells
-	for y := 0; y < height; y++ {
+	for y := range newWorld {
+		newWorld[y] = make([]byte, width)
 		for x := 0; x < width; x++ {
 			//For each cell count surrounding alive cells
 			count := 0
@@ -87,6 +83,10 @@ func makeTurn(world [][]byte, height int, width int) [][]byte {
 			}
 		}
 	}
+
+	// //Fill new empty world with alive cells
+	// for y := 0; y < height; y++ {
+	// }
 
 	return newWorld
 }
