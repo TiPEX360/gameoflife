@@ -1,0 +1,27 @@
+./comparison/compare.sh
+Benchmarking...
+128x128x2 on your solution
+128x128x2 on baseline solution
+128x128x4 on your solution
+128x128x4 on baseline solution
+128x128x8 on your solution
+128x128x8 on baseline solution
+
+TIME RESULTS
+Benchmark       Baseline result   Your result       % Difference
+                (ns/1000 turns)   (ns/1000 turns)   The bigger the better
+128x128x2-12     734291092         344737711         212 %
+128x128x4-12     528770588         439687172         120 %
+128x128x8-12     360017960         417749638         86 %
+
+CPU USAGE RESULTS
+Benchmark       Baseline CPU usage   Your CPU usage   % Difference
+                                                      The smaller the better
+128x128x2-12     184 %                162 %            113 %
+128x128x4-12     297 %                202 %            147 %
+128x128x8-12     424 %                233 %            181 %
+This is the percentage of the CPU that this job got. It's computed as (U + S) / E
+Where
+U   Total number of CPU-seconds that the process spent in user mode.
+S   Total number of CPU-seconds that the process spent in kernel mode.
+E   Elapsed real time

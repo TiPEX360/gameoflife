@@ -138,12 +138,15 @@ func gameOfLife(p golParams, key chan rune) []cell {
 	for i := 0; i < p.threads; i++ {
 		workerChans[i] = make([]chan byte, 3)
 		for j := 0; j < 3; j++ {
-			workerChans[i][j] = make(chan byte, 1) // Made buffered
+			workerChans[i][j] = make(chan byte, 5)
 		}
 		comChans[i] = make(chan workerComs)
 	}
 
-	remainder := p.imageHeight % p.threads
+	remainder := p.imageHeight
+	for remainder >= p.threads {
+		remainder -= p.threads
+	}
 	for i := 0; i < p.threads; i++ {
 
 		var in inChans

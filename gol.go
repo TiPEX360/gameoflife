@@ -59,7 +59,17 @@ func makeTurn(world [][]byte, height int, width int) [][]byte {
 			for i := -1; i < 2; i++ {
 				for j := -1; j < 2; j++ {
 					if !(i == 0 && j == 0) {
-						if world[(y+height+i)%height][(x+width+j)%width] != 0 {
+
+						//  if world[(y+height+i)%height][(x+width+j)%width] != 0 {
+						yFinal := y + i + height
+						xFinal := x + j + width
+						for yFinal >= height {
+							yFinal -= height
+						}
+						for xFinal >= width {
+							xFinal -= width
+						}
+						if world[yFinal][xFinal] != 0 {
 							count++
 						}
 					}
@@ -89,11 +99,18 @@ func findBounds(p golParams) [][]int {
 	}
 
 	offset := 0
+	//OPTIMIZE
+	//if (p.imageHeight % p.threads) > thread {
+	remainder := p.imageHeight
+	for remainder >= p.threads {
+		remainder -= p.threads
+	}
 	for thread := 0; thread < p.threads; thread++ {
 		top := (thread * (p.imageHeight / p.threads)) + offset
 		bottom := ((thread+1)*(p.imageHeight/p.threads) - 1) + offset
 
-		if (p.imageHeight % p.threads) > thread {
+		//
+		if remainder > thread {
 			bottom++
 			offset++
 		}

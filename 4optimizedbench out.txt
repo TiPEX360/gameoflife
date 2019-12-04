@@ -1,0 +1,1082 @@
+bash-4.2$ ./run\ bench.sh 
+go test -bench .
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-0 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-0 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-0 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-1 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-1 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-1 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+goos: linux
+goarch: amd64
+pkg: uk.ac.bris.cs/gameoflife
+Benchmark/16x16x2-12         	      56	  26047609 ns/op
+Benchmark/16x16x4-12         	      44	  35332230 ns/op
+Benchmark/16x16x8-12         	      28	  41695490 ns/op
+Benchmark/64x64x2-12         	       6	 209588612 ns/op
+Benchmark/64x64x4-12         	       7	 169450144 ns/op
+Benchmark/64x64x8-12         	       6	 179901312 ns/op
+Benchmark/128x128x2-12       	       3	 358300667 ns/op
+Benchmark/128x128x4-12       	       3	 434029831 ns/op
+Benchmark/128x128x8-12       	       3	 425611542 ns/op
+Benchmark/256x256x2-12       	       1	1560585082 ns/op
+Benchmark/256x256x4-12       	       1	1207049112 ns/op
+Benchmark/256x256x8-12       	       1	1067954887 ns/op
+Benchmark/512x512x2-12       	       1	4682356162 ns/op
+Benchmark/512x512x4-12       	       1	4107991469 ns/op
+Benchmark/512x512x8-12       	       1	3209823075 ns/op
+ok  	uk.ac.bris.cs/gameoflife	35.479s
+go test -bench .
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-0 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-0 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-0 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-1 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-1 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-1 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+goos: linux
+goarch: amd64
+pkg: uk.ac.bris.cs/gameoflife
+Benchmark/16x16x2-12         	      46	  48415761 ns/op
+Benchmark/16x16x4-12         	      20	  50960572 ns/op
+Benchmark/16x16x8-12         	      21	  66470782 ns/op
+Benchmark/64x64x2-12         	       7	 192697060 ns/op
+Benchmark/64x64x4-12         	       6	 167214464 ns/op
+Benchmark/64x64x8-12         	       6	 241459333 ns/op
+Benchmark/128x128x2-12       	       3	 358444200 ns/op
+Benchmark/128x128x4-12       	       3	 435925820 ns/op
+Benchmark/128x128x8-12       	       3	 424154889 ns/op
+Benchmark/256x256x2-12       	       1	1181002961 ns/op
+Benchmark/256x256x4-12       	       1	1255739683 ns/op
+Benchmark/256x256x8-12       	       1	1079348884 ns/op
+Benchmark/512x512x2-12       	       1	4348605832 ns/op
+Benchmark/512x512x4-12       	       1	3981022745 ns/op
+Benchmark/512x512x8-12       	       1	3267450547 ns/op
+ok  	uk.ac.bris.cs/gameoflife	33.493s
+go test -bench .
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-0 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-0 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-0 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-1 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-1 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-1 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+goos: linux
+goarch: amd64
+pkg: uk.ac.bris.cs/gameoflife
+Benchmark/16x16x2-12         	      68	  17824020 ns/op
+Benchmark/16x16x4-12         	      45	  28495131 ns/op
+Benchmark/16x16x8-12         	      22	  51331958 ns/op
+Benchmark/64x64x2-12         	       6	 207909453 ns/op
+Benchmark/64x64x4-12         	       7	 165593152 ns/op
+Benchmark/64x64x8-12         	       6	 177068133 ns/op
+Benchmark/128x128x2-12       	       3	 346783127 ns/op
+Benchmark/128x128x4-12       	       3	 439463356 ns/op
+Benchmark/128x128x8-12       	       3	 428780742 ns/op
+Benchmark/256x256x2-12       	       1	1191866225 ns/op
+Benchmark/256x256x4-12       	       1	1207050033 ns/op
+Benchmark/256x256x8-12       	       1	1068341552 ns/op
+Benchmark/512x512x2-12       	       1	4321846570 ns/op
+Benchmark/512x512x4-12       	       1	3913406849 ns/op
+Benchmark/512x512x8-12       	       1	3221482625 ns/op
+ok  	uk.ac.bris.cs/gameoflife	33.013s
+go test -bench .
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-0 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-0 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-0 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-1 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-1 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-1 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+goos: linux
+goarch: amd64
+pkg: uk.ac.bris.cs/gameoflife
+Benchmark/16x16x2-12         	      55	  49548183 ns/op
+Benchmark/16x16x4-12         	      46	  39912627 ns/op
+Benchmark/16x16x8-12         	      31	  56266169 ns/op
+Benchmark/64x64x2-12         	       7	 211031861 ns/op
+Benchmark/64x64x4-12         	       6	 219389586 ns/op
+Benchmark/64x64x8-12         	       6	 198490654 ns/op
+Benchmark/128x128x2-12       	       3	 436390918 ns/op
+Benchmark/128x128x4-12       	       3	 532190841 ns/op
+Benchmark/128x128x8-12       	       3	 518261593 ns/op
+Benchmark/256x256x2-12       	       1	1196785884 ns/op
+Benchmark/256x256x4-12       	       1	1223775220 ns/op
+Benchmark/256x256x8-12       	       1	1063677322 ns/op
+Benchmark/512x512x2-12       	       1	4376035292 ns/op
+Benchmark/512x512x4-12       	       1	3843077154 ns/op
+Benchmark/512x512x8-12       	       1	3324647720 ns/op
+ok  	uk.ac.bris.cs/gameoflife	35.818s
+go test -bench .
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-0 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-0 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-0 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-1 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-1 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-1 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+goos: linux
+goarch: amd64
+pkg: uk.ac.bris.cs/gameoflife
+Benchmark/16x16x2-12         	      28	  53823119 ns/op
+Benchmark/16x16x4-12         	      31	  34526603 ns/op
+Benchmark/16x16x8-12         	      26	  54601773 ns/op
+Benchmark/64x64x2-12         	       7	 213558037 ns/op
+Benchmark/64x64x4-12         	       6	 173483955 ns/op
+Benchmark/64x64x8-12         	       6	 242192130 ns/op
+Benchmark/128x128x2-12       	       3	 352946439 ns/op
+Benchmark/128x128x4-12       	       3	 433058369 ns/op
+Benchmark/128x128x8-12       	       3	 424301879 ns/op
+Benchmark/256x256x2-12       	       1	1178950607 ns/op
+Benchmark/256x256x4-12       	       1	1233400263 ns/op
+Benchmark/256x256x8-12       	       1	1070243569 ns/op
+Benchmark/512x512x2-12       	       1	4325623940 ns/op
+Benchmark/512x512x4-12       	       1	3781525241 ns/op
+Benchmark/512x512x8-12       	       1	3217201163 ns/op
+ok  	uk.ac.bris.cs/gameoflife	33.204s
+go test -bench .
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-0 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-0 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-0 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-1 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-1 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-1 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+goos: linux
+goarch: amd64
+pkg: uk.ac.bris.cs/gameoflife
+Benchmark/16x16x2-12         	      49	  25375214 ns/op
+Benchmark/16x16x4-12         	      28	  47792488 ns/op
+Benchmark/16x16x8-12         	      30	  53492456 ns/op
+Benchmark/64x64x2-12         	       6	 228696015 ns/op
+Benchmark/64x64x4-12         	       7	 165276329 ns/op
+Benchmark/64x64x8-12         	       6	 179875587 ns/op
+Benchmark/128x128x2-12       	       3	 362108973 ns/op
+Benchmark/128x128x4-12       	       3	 435085823 ns/op
+Benchmark/128x128x8-12       	       3	 425327062 ns/op
+Benchmark/256x256x2-12       	       1	1195573689 ns/op
+Benchmark/256x256x4-12       	       1	1200646303 ns/op
+Benchmark/256x256x8-12       	       1	1069248567 ns/op
+Benchmark/512x512x2-12       	       1	4594125314 ns/op
+Benchmark/512x512x4-12       	       1	3965500418 ns/op
+Benchmark/512x512x8-12       	       1	3235258328 ns/op
+ok  	uk.ac.bris.cs/gameoflife	33.951s
+go test -bench .
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-0 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-0 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-0 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-1 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-1 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-1 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+goos: linux
+goarch: amd64
+pkg: uk.ac.bris.cs/gameoflife
+Benchmark/16x16x2-12         	      25	  62171674 ns/op
+Benchmark/16x16x4-12         	      32	  37832086 ns/op
+Benchmark/16x16x8-12         	      22	  73046706 ns/op
+Benchmark/64x64x2-12         	       5	 218249118 ns/op
+Benchmark/64x64x4-12         	       7	 199706837 ns/op
+Benchmark/64x64x8-12         	       6	 177333686 ns/op
+Benchmark/128x128x2-12       	       3	 370463135 ns/op
+Benchmark/128x128x4-12       	       3	 433721308 ns/op
+Benchmark/128x128x8-12       	       3	 427022676 ns/op
+Benchmark/256x256x2-12       	       1	1189927213 ns/op
+Benchmark/256x256x4-12       	       1	1234845600 ns/op
+Benchmark/256x256x8-12       	       1	1074528883 ns/op
+Benchmark/512x512x2-12       	       1	4326257905 ns/op
+Benchmark/512x512x4-12       	       1	3944401678 ns/op
+Benchmark/512x512x8-12       	       1	3335085280 ns/op
+ok  	uk.ac.bris.cs/gameoflife	35.153s
+go test -bench .
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-0 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-0 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-0 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-1 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-1 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-1 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+goos: linux
+goarch: amd64
+pkg: uk.ac.bris.cs/gameoflife
+Benchmark/16x16x2-12         	      63	  31418433 ns/op
+Benchmark/16x16x4-12         	      32	  31291957 ns/op
+Benchmark/16x16x8-12         	      28	  40341304 ns/op
+Benchmark/64x64x2-12         	       6	 215524768 ns/op
+Benchmark/64x64x4-12         	       6	 216809533 ns/op
+Benchmark/64x64x8-12         	       6	 180114818 ns/op
+Benchmark/128x128x2-12       	       3	 360760297 ns/op
+Benchmark/128x128x4-12       	       3	 434501538 ns/op
+Benchmark/128x128x8-12       	       3	 439422189 ns/op
+Benchmark/256x256x2-12       	       1	1192778560 ns/op
+Benchmark/256x256x4-12       	       1	1205902198 ns/op
+Benchmark/256x256x8-12       	       1	1080319372 ns/op
+Benchmark/512x512x2-12       	       1	4417880367 ns/op
+Benchmark/512x512x4-12       	       1	3778023855 ns/op
+Benchmark/512x512x8-12       	       1	3244092948 ns/op
+ok  	uk.ac.bris.cs/gameoflife	32.669s
+go test -bench .
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-0 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-0 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-0 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-1 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-1 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-1 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+goos: linux
+goarch: amd64
+pkg: uk.ac.bris.cs/gameoflife
+Benchmark/16x16x2-12         	      46	  22068275 ns/op
+Benchmark/16x16x4-12         	      42	  27999662 ns/op
+Benchmark/16x16x8-12         	      31	  39857246 ns/op
+Benchmark/64x64x2-12         	       7	 189257307 ns/op
+Benchmark/64x64x4-12         	       7	 166226119 ns/op
+Benchmark/64x64x8-12         	       6	 178633288 ns/op
+Benchmark/128x128x2-12       	       3	 353242498 ns/op
+Benchmark/128x128x4-12       	       3	 435241550 ns/op
+Benchmark/128x128x8-12       	       3	 431332632 ns/op
+Benchmark/256x256x2-12       	       1	1219138979 ns/op
+Benchmark/256x256x4-12       	       1	1199576001 ns/op
+Benchmark/256x256x8-12       	       1	1071507978 ns/op
+Benchmark/512x512x2-12       	       1	4500374784 ns/op
+Benchmark/512x512x4-12       	       1	3904640351 ns/op
+Benchmark/512x512x8-12       	       1	3196085342 ns/op
+ok  	uk.ac.bris.cs/gameoflife	32.010s
+go test -bench .
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-0 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-0 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-0 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-1 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-1 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-1 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+Alive cell at 4 5
+Alive cell at 5 6
+Alive cell at 3 7
+Alive cell at 4 7
+Alive cell at 5 7
+File 16x16 input done!
+Output in progress...
+File 16x16-100 output done!
+goos: linux
+goarch: amd64
+pkg: uk.ac.bris.cs/gameoflife
+Benchmark/16x16x2-12         	      60	  26962369 ns/op
+Benchmark/16x16x4-12         	      38	  34486594 ns/op
+Benchmark/16x16x8-12         	      22	  47644885 ns/op
+Benchmark/64x64x2-12         	       7	 212934925 ns/op
+Benchmark/64x64x4-12         	       7	 166717933 ns/op
+Benchmark/64x64x8-12         	       6	 176410766 ns/op
+Benchmark/128x128x2-12       	       3	 365320634 ns/op
+Benchmark/128x128x4-12       	       3	 437870193 ns/op
+Benchmark/128x128x8-12       	       3	 428729730 ns/op
+Benchmark/256x256x2-12       	       1	1214018487 ns/op
+Benchmark/256x256x4-12       	       1	1220106119 ns/op
+Benchmark/256x256x8-12       	       1	1073030058 ns/op
+Benchmark/512x512x2-12       	       1	4305537913 ns/op
+Benchmark/512x512x4-12       	       1	3942236479 ns/op
+Benchmark/512x512x8-12       	       1	3210854252 ns/op
+ok  	uk.ac.bris.cs/gameoflife	32.308s
+bash-4.2$
